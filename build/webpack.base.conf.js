@@ -24,6 +24,7 @@ module.exports = {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       // 'vue$': 'vue/dist/vue.esm.js',
+      // 路径引用优化
       '@': resolve('src'),
 			'/components': resolve('src/components'),
 			'/pages': resolve('src/pages'),
