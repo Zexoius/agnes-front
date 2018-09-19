@@ -11,11 +11,8 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-//     	'/user/*': {
-//     		target: 'http://127.0.0.1:8004'  //请求本地，访问后台接口
-//     	},
-//     	'/goods/*': {
-//     		target: 'http://127.0.0.1:8888'	 //同上
+//     	'/manager': {
+//     		target: 'http://127.0.0.1:8002'  //请求网关分发
 //     	}
     },
 
