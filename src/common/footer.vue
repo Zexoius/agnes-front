@@ -22,18 +22,18 @@
 					</dd>
 				</dl>
 				<dl>
-					<dt>热门活动</dt>
+					<dt>项目介绍</dt>
 					<dd>
 						<ul>
 							<li>
-								<a href="https://github.com/Zexoius/agnes">推荐有礼</a>
+								<a href="https://github.com/Zexoius/agnes">agnes 后端</a>
 							</li>
 							<li>
-								<a>推荐有礼</a>
+								<a href="https://github.com/Zexoius/agnes-front">agnes-front 前端</a>
 							</li>
-							<li>
+							<!--<li>
 								<a>推荐有礼</a>
-							</li>
+							</li>-->
 						</ul>
 					</dd>
 				</dl>
@@ -42,23 +42,23 @@
 					<dd>
 						<ul>
 							<li>
-								<a>推荐有礼</a>
+								<a>夏令营</a>
 							</li>
 							<li>
-								<a>推荐有礼</a>
+								<a>课外活动</a>
 							</li>
 							<li>
-								<a>推荐有礼</a>
+								<a>分期付款</a>
 							</li>
 						</ul>
 					</dd>
 				</dl>
 				<dl>
-					<dt>热门活动</dt>
+					<dt>自助服务</dt>
 					<dd>
 						<ul>
 							<li>
-								<a>推荐有礼</a>
+								<a>选购帮助</a>
 							</li>
 							<li>
 								<a>推荐有礼</a>
