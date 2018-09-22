@@ -22,7 +22,7 @@
                             </div>
                             <!--列表-->
                             <div class="cart-table" v-for="(item,i) in cartList" :key="i">
-                                <div class="cart-group divide pr" :data-productid="item.productId">
+                                <div class="cart-group divide pr" :data-productid="item.goodsId">
                                     <div class="cart-top-items">
                                         <div class="cart-items clearfix">
                                             <!--勾选-->
@@ -32,12 +32,12 @@
                                             <!--图片-->
                                             <div class="items-thumb fl">
                                                 <img :alt="item.productName" :src="item.productImg">
-                                                <a @click="goodsDetails(item.productId)" :title="item.productName" target="_blank"></a>
+                                                <a @click="goodsDetails(item.goodsId)" :title="item.goodsName" target="_blank"></a>
                                             </div>
                                             <!--信息-->
                                             <div class="name hide-row fl">
                                                 <div class="name-table">
-                                                    <a @click="goodsDetails(item.productId)" :title="item.productName" target="_blank" v-text="item.productName"></a>
+                                                    <a @click="goodsDetails(item.goodsId)" :title="item.goodsName" target="_blank" v-text="item.goodsName"></a>
                                                     <!-- <ul class="attribute">
                             <li>白色</li>
                           </ul> -->
@@ -45,14 +45,14 @@
                                             </div>
                                             <!--删除按钮-->
                                             <div class="operation">
-                                                <a class="items-delete-btn" @click="cartdel(item.productId)"></a>
+                                                <a class="items-delete-btn" @click="cartdel(item.goodsId)"></a>
                                             </div>
                                             <!--商品数量-->
                                             <div>
                                                 <!--总价格-->
-                                                <div class="subtotal" style="font-size: 14px">¥ {{item.salePrice * item.productNum}}</div>
+                                                <div class="subtotal" style="font-size: 14px">¥ {{item.salePrice * item.goodsNum}}</div>
                                                 <!--数量-->
-                                                <buy-num :num="item.productNum" :id="item.productId" :checked="item.checked" style="height: 140px;
+                                                <buy-num :num="item.goodsNum" :id="item.goodsId" :checked="item.checked" style="height: 140px;
                                    display: flex;
                                    align-items: center;
                                    justify-content: center;" :limit="item.limitNum" @edit-num="EditNum">
@@ -71,8 +71,8 @@
                             <div class="cart-bar-operation">
                                 <div>
                                     <div class="choose-all">
-                                        <span :class="{'checkbox-on':checkAllFlag}" class="blue-checkbox-new" @click="editCheckAll"></span>
-                                        <span @click="editCheckAll">全选</span>
+                                        <span :class="{'checkbox-on':checkAllFlag}" class="blue-checkbox-new" @click="_isCheckAll"></span>
+                                        <span @click="_isCheckAll">全选</span>
                                     </div>
                                     <div class="delete-choose-goods" @click="delChecked">删除选中的商品</div>
                                 </div>
@@ -108,7 +108,6 @@
                             <y-button text="现在选购" style="width: 150px;height: 40px;line-height: 38px;color: #8d8d8d"></y-button>
                         </router-link>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -118,8 +117,8 @@
 <script>
     import {
         getCartList,
-        cartEdit,
-        editCheckAll,
+        editCart,
+        isCheckAll,
         cartDel,
         delCartChecked
     } from '/api/goods'
@@ -133,7 +132,7 @@
     import BuyNum from '/components/buynum'
     import {
         getStore
-    } from '/utils/storage'
+    } from '/store/storage'
     export default {
         data() {
             return {
@@ -154,7 +153,9 @@
             checkedCount() {
                 var i = 0
                 this.cartList && this.cartList.forEach((item) => {
-                    if (item.checked === '1') i++
+                    if (item.checked === '1') {
+                    	i++
+                    }
                 })
                 return Number(i)
             },
@@ -162,7 +163,7 @@
             totalNum() {
                 var totalNum = 0
                 this.cartList && this.cartList.forEach(item => {
-                    totalNum += (item.productNum)
+                    totalNum += (item.goodsNum)
                 })
                 return Number(totalNum)
             },
@@ -171,7 +172,7 @@
                 var totalPrice = 0
                 this.cartList && this.cartList.forEach(item => {
                     if (item.checked === '1') {
-                        totalPrice += (item.productNum * item.salePrice)
+                        totalPrice += (item.goodsNum * item.salePrice)
                     }
                 })
                 return totalPrice
@@ -181,7 +182,7 @@
                 var checkNum = 0
                 this.cartList && this.cartList.forEach(item => {
                     if (item.checked === '1') {
-                        checkNum += (item.productNum)
+                        checkNum += (item.goodsNum)
                     }
                 })
                 return checkNum
@@ -197,12 +198,14 @@
                 })
             },
             goodsDetails(id) {
-                window.open(window.location.origin + '#/goodsDetails?productId=' + id)
+                window.open(window.location.origin + '/goodsDetail?productId=' + id)
             },
             // 全选
-            editCheckAll() {
+            _isCheckAll() {
                 let checkAll = !this.checkAllFlag
-                editCheckAll({
+                console.log(this.checkedCount)
+                console.log(this.cartList)
+                isCheckAll({
                     userId: this.userId,
                     checked: checkAll
                 }).then(res => {
@@ -212,18 +215,18 @@
                 })
             },
             // 修改购物车
-            _cartEdit(userId, productId, productNum, checked) {
-                cartEdit({
+            _cartEdit(userId, goodsId, goodsNum, checked) {
+                editCart({
                     userId,
-                    productId,
-                    productNum,
+                    goodsId,
+                    goodsNum,
                     checked
                 }).then(res => {
-                    if (res.success === true) {
+                    if (res.code === 1) {
                         this.EDIT_CART({
-                            productId,
+                            goodsId,
                             checked,
-                            productNum
+                            goodsNum
                         })
                     }
                 })
@@ -232,48 +235,52 @@
             editCart(type, item) {
                 if (type && item) {
                     let checked = item.checked
-                    let productId = item.productId
-                    let productNum = item.productNum
+                    let goodsId = item.goodsId
+                    let goodsNum = item.goodsNum
                     // 勾选
                     if (type === 'check') {
                         let newChecked = checked === '1' ? '0' : '1'
-                        this._cartEdit(this.userId, productId, productNum, newChecked)
+                        this._cartEdit(this.userId, goodsId, goodsNum, newChecked)
                     }
                 } else {
                     console.log('缺少所需参数')
                 }
             },
-            EditNum(productNum, productId, checked) { // 数量
-                this._cartEdit(this.userId, productId, productNum, checked)
+            EditNum(goodsNum, goodsId, checked) { // 数量
+                this._cartEdit(this.userId, goodsId, goodsNum, checked)
             },
             // 删除整条购物车
-            cartdel(productId) {
+            cartdel(goodsId) {
                 cartDel({
                     userId: this.userId,
-                    productId
+                    goodsId
                 }).then(res => {
                     this.EDIT_CART({
-                        productId
+                        goodsId
                     })
                 })
             },
             checkout() {
                 this.checkoutNow = '结算中...'
                 this.submit = false
-                this.$router.push({
-                    path: 'checkout'
-                })
+//              this.$router.push({
+//                  path: 'checkout'
+//              })
+				this.$message({
+					message: "待开发",
+					type: 'success'
+				})
             },
             delChecked() {
                 getCartList({
                     userId: getStore('userId')
                 }).then(res => {
-                    if (res.success === true) {
-                        res.result.forEach(item => {
+                    if (res.code === 1) {
+                        res.cartList.forEach(item => {
                             if (item.checked === '1') {
-                                let productId = item.productId
+                                let goodsId = item.goodsId
                                 this.EDIT_CART({
-                                    productId
+                                    goodsId
                                 })
                             }
                         })
@@ -282,7 +289,7 @@
                 delCartChecked({
                     userId: this.userId
                 }).then(res => {
-                    if (res.success !== true) {
+                    if (res.code !== 1) {
                         this.message('删除失败')
                     }
                 })
@@ -371,7 +378,7 @@
                     font-size: 12px;
                     line-height: 24px;
                     .items-delete-btn {
-                        background-image: url(../../../static/images/delete-btn-icon_a35bf2437e@2x.jpg);
+                        background-image: url(../../assets/img/delete-btn-icon_a35bf2437e@2x.jpg);
                         &:hover {
                             background-position: 0 -36px;
                         }
@@ -382,7 +389,7 @@
                         height: 24px;
                         margin: 0 auto;
                         color: #C2C2C2;
-                        background: url(../../../static/images/delete-btn-icon_a35bf2437e@2x.jpg);
+                        background: url(../../assets/img/delete-btn-icon_a35bf2437e@2x.jpg);
                         -webkit-background-size: 100% auto;
                         background-size: 100% auto;
                         -moz-transition: none;
@@ -513,7 +520,7 @@
             position: relative;
             width: 20px;
             height: 20px;
-            background: url(../../../static/images/checkbox-new_631a56a4f6.png) no-repeat 0 -20px;
+            background: url(../../assets/img/checkbox-new_631a56a4f6.png) no-repeat 0 -20px;
             cursor: pointer;
             -moz-user-select: none;
             -webkit-user-select: none;
@@ -524,7 +531,7 @@
 
         .blue-checkbox-new.checkbox-on,
         .choose-checkbox-on .blue-checkbox-new {
-            background: url(../../../static/images/checkbox-new_631a56a4f6.png) no-repeat 0 0;
+            background: url(../../assets/img/checkbox-new_631a56a4f6.png) no-repeat 0 0;
         }
         .delete-choose-goods {
             position: relative;
@@ -587,7 +594,7 @@
 
     .cart-e {
         margin: 0 auto;
-        background: url("/static/images/cart-empty_@2x.png") no-repeat;
+        background: url(../../assets/img/cart-empty_@2x.png) no-repeat;
         width: 275px;
         height: 300px;
         color: #8d8d8d;

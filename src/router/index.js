@@ -12,6 +12,7 @@ const AddressList = () => import('/pages/User/List/addressList.vue')
 const Information = () => import('/pages/User/List/information.vue') 
 const Goods = () => import('/pages/Goods/goods.vue')
 const GoodsDetail = () => import('/pages/Goods/goodsDetails')
+const Cart = () => import('/pages/Cart/cart.vue')
 Vue.use(Router)
 export default new Router({
 	mode: 'history',
@@ -68,9 +69,12 @@ export default new Router({
 			]
 		},
 		{
+			path: '/cart',
+			component: Cart
+		},
+		{
 			path: '*',
 			redirect: '/home'
-			
 		}
 	]
 })

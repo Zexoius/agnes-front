@@ -11,7 +11,7 @@
             <h3 class="sub-title ellipsis">{{msg.subTitle}}</h3>
             <div class="good-price pr">
                 <div class="ds pa">
-                    <a target="_blank" :href="'localhost:8082/goodsDetail?productId='+msg.productId">
+                    <a @click="goodsDetails(msg.productId)">
                         <el-button style="margin: 0 5px">查看详情</el-button>
                     </a>
                     <el-button type="primary" style="margin: 0 5px" @click="_addCart(msg.productId,msg.salePrice,msg.productName,msg.productImageBig)"
@@ -47,9 +47,10 @@
         methods: {
             ...mapMutations(['ADD_CART', 'ADD_ANIMATION', 'SHOW_CART']),
             goodsDetails(id) {
-                this.$router.push({
-                    path: '/goodsDetail/goodsId=' + id
-                })
+//              this.$router.push({
+//                  path: '/goodsDetail/goodsId=' + id
+//              })
+			window.open('//' + window.location.host + '/goodsDetail?productId=' + id)	
             },
             _addCart(id, price, name, img) {
                 if (!this.showMoveImg) { // 动画是否在运动

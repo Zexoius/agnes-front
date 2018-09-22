@@ -6,7 +6,7 @@
 					<div class=img-box><img :src="userInfo.info.avator" alt=""></div>
 					<div class="r-box">
 						<h3 style="margin-left: 13px;">修改头像</h3>
-						<y-button text="上传头像" classStyle="main-btn" style="margin: 0;" @btnClick="editAvatar()"></y-button>
+						<el-button type="primary" style="margin: 0;" @click="editAvatar()">上传头像</el-button>
 					</div>
 				</div>
 				<div class="edit-avatar" v-if="editAvatarShow">
@@ -32,7 +32,8 @@
 								<div style="padding: 10px 0 ">头像预览</div>
 								<div class="btn">
 									<a href="javascript:;">重新选择</a>
-									<input type="file" value="上传头像" @change="upimg($event)"></div>
+									<input type="file" value="上传头像" @change="upimg($event)" />
+								</div>
 							</div>
 							<div class="edit-r">
 								<div>
@@ -43,10 +44,10 @@
 
 							</div>
 							<div class="bootom-btn pa">
-								<y-button style="width: 140px;height: 40px;line-height: 40px" text="取消" @btnClick="editAvatarShow=false">
-								</y-button>
-								<y-button style="width: 140px;height: 40px;line-height: 40px" text="确定" classStyle="main-btn" @btnClick="cropper">
-								</y-button>
+								<el-button style="width: 140px;height: 40px;line-height: 15px"  @click="editAvatarShow=false">取消
+								</el-button>
+								<el-button style="width: 140px;height: 40px;line-height: 15px" type="primary"  @click="cropper">确定
+								</el-button>
 							</div>
 						</div>
 					</y-shelf>
@@ -57,7 +58,7 @@
 </template>
 <script>
 	import YButton from '/components/YButton'
-//	import { upload } from '/api/index'
+	//	import { upload } from '/api/index'
 	import YShelf from '/components/shelf'
 	import vueCropper from 'vue-cropper'
 	import { mapState, mapMutations } from 'vuex'
@@ -152,7 +153,7 @@
 						})
 					})
 				} else {
-					this.messageFail('别玩我啊 先选照骗')
+					this.messageFail('我看你是在逗我胖虎玩？')
 				}
 			},
 			editAvatar() {
