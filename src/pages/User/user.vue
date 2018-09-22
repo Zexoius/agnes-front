@@ -8,7 +8,7 @@
 				<div class="account-sidebar">
 					<div class="avatar gray-box ">
 						<div>
-							<img :src="userInfo.info.file">
+							<img :src="userInfo.info.avator">
 							<h5>
               					{{userInfo.info.username}}
 							</h5>
@@ -39,7 +39,7 @@
 	export default {
 		data() {
 			return {
-				title: '我的订单',
+				title: '账户资料',
 				nav: [{
 						name: '我的订单',
 						path: 'orderList'
@@ -52,18 +52,6 @@
 						name: '收货地址',
 						path: 'addressList'
 					},
-					{
-						name: '我的优惠',
-						path: 'coupon'
-					},
-					{
-						name: '售后服务',
-						path: 'support'
-					},
-					{
-						name: '以旧换新',
-						path: 'aihuishou'
-					}
 				],
 				editAvatar: true
 			}

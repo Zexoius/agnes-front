@@ -8,6 +8,8 @@ const Index = () => import('/pages/index.vue')
 const Home = () => import('/pages/Home/home.vue')
 const User = () => import('/pages/User/user.vue')
 const OrderList = () => import('/pages/User/List/order.vue')
+const AddressList = () => import('/pages/User/List/addressList.vue')
+const Information = () => import('/pages/User/List/information.vue') 
 const Goods = () => import('/pages/Goods/goods.vue')
 const GoodsDetail = () => import('/pages/Goods/goodsDetails')
 Vue.use(Router)
@@ -45,13 +47,24 @@ export default new Router({
 			path: '/user',
 			name: 'user',
 			component: User,
-			redirect: '/user/orderList',
-			children: [
+			redirect: '/user/information',
+			children: 
+			[
 				{
-					path: '/orderList',
+					path: 'orderList',
 					name: 'orderList',
 					component: OrderList
-				}
+				},
+				{
+					path: 'addressList',
+					name: 'addressList',
+					component: AddressList
+				},
+				{
+					path: 'information',
+					name: 'information',
+					component: Information
+				},
 			]
 		},
 		{

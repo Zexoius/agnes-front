@@ -1,25 +1,29 @@
 <template>
 	<div>
 		<y-shelf title="收货地址">
-			<span slot="right"><y-button text="添加收货地址" style="margin: 0" @btnClick="update()"></y-button></span>
+			<span slot="right">
+				<el-button type="primary" style="margin: 0" @click="update()">
+					添加收货地址
+				</el-button>
+			</span>
 			<div slot="content">
 				<!--标题-->
 				<div class="table-title">
-					<span class="name">姓名</span> 
-					<span class="address">详细地址</span> 
+					<span class="name">姓名</span>
+					<span class="address">详细地址</span>
 					<span class="tel">电话</span>
 				</div>
 				<div v-if="addList.length">
 					<div class="address-item" v-for="(item,i) in addList" :key="i">
 						<div class="name">{{item.userName}}</div>
-						<div class="address-msg">{{item.streetName}}</div>
-						<div class="telephone">{{item.tel}}</div>
+						<div class="address-msg">{{item.address}}</div>
+						<div class="telephone">{{item.phone}}</div>
 						<div class="defalut">
 							<a @click="changeDef(item)" href="javascript:;" v-text="item.isDefault?'( 默认地址 )':'设为默认'" :class="{'defalut-address':item.isDefault}"></a>
 						</div>
 						<div class="operation">
-							<el-button type="primary" icon="edit" size="small" @click="update(item)"></el-button>
-							<el-button type="danger" icon="delete" size="small" :data-id="item.addressId" @click="del(item.addressId,i)"></el-button>
+							<el-button type="primary" icon="edit" size="small" @click="update(item)">修改</el-button>
+							<el-button type="danger" icon="delete" size="small" :data-id="item.addressId" @click="del(item.addressId,i)">删除</el-button>
 						</div>
 					</div>
 				</div>
@@ -27,7 +31,7 @@
 					<div style="padding: 80px 0;text-align: center">
 						<div style="font-size: 20px">你还未添加收货地址</div>
 						<div style="margin: 20px ">
-							<y-button text="添加地址" @btnClick="update()"></y-button>
+							<el-button type="default" @click="update()">添加地址</el-button>
 						</div>
 					</div>
 				</div>
@@ -36,18 +40,18 @@
 		<y-popup :open="popupOpen" @close='popupOpen=false' :title="popupTitle">
 			<div slot="content" class="md" :data-id="msg.addressId">
 				<div>
-					<input type="text" placeholder="收货人姓名" v-model="msg.userName">
+					<el-input type="text" placeholder="收货人姓名" v-model="msg.userName" />
 				</div>
 				<div>
-					<input type="number" placeholder="手机号码" v-model="msg.tel">
+					<el-input type="number" placeholder="手机号码" v-model="msg.phone" />
 				</div>
 				<div>
-					<input type="text" placeholder="收货地址" v-model="msg.streetName">
+					<el-input type="text" placeholder="收货地址" v-model="msg.address" />
 				</div>
 				<div>
-					<el-checkbox class="auto-login" v-model="msg.isDefault">设为默认</el-checkbox>
+					<el-checkbox class="auto-login" v-model="msg.isDefault">设为默认收货地址</el-checkbox>
 				</div>
-				<y-button text='保存' class="btn" :classStyle="btnHighlight?'main-btn':'disabled-btn'" @btnClick="save({userId:userId,addressId:msg.addressId,userName:msg.userName,tel:msg.tel,streetName:msg.streetName,isDefault:msg.isDefault})">
+				<y-button text='保存' class="btn" :classStyle="btnHighlight?'main-btn':'disabled-btn'" @btnClick="save({userId:userId,addressId:msg.addressId,userName:msg.userName,phone:msg.phone,address:msg.address,isDefault:msg.isDefault})">
 				</y-button>
 			</div>
 		</y-popup>
@@ -56,16 +60,16 @@
 <script>
 	import {
 		addressList,
-		addressUpdate,
-		addressAdd,
-		addressDel
-	} from '/api/goods'
+		updateAddress,
+		addAddress,
+		delAddress
+	} from '/api/index'
 	import YButton from '/components/YButton'
 	import YPopup from '/components/popup'
 	import YShelf from '/components/shelf'
 	import {
 		getStore
-	} from '/utils/storage'
+	} from '/store/storage'
 	export default {
 		data() {
 			return {
@@ -75,8 +79,8 @@
 				msg: {
 					addressId: '',
 					userName: '',
-					tel: '',
-					streetName: '',
+					phone: '',
+					address: '',
 					isDefault: false
 				},
 				userId: ''
@@ -85,7 +89,7 @@
 		computed: {
 			btnHighlight() {
 				let msg = this.msg
-				return msg.userName && msg.tel && msg.streetName
+				return msg.userName && msg.phone && msg.address
 			}
 		},
 		methods: {
@@ -108,13 +112,13 @@
 				})
 			},
 			_addressUpdate(params) {
-				addressUpdate(params).then(res => {
+				updateAddress(params).then(res => {
 					this._addressList()
 				})
 			},
 			_addressAdd(params) {
-				addressAdd(params).then(res => {
-					if(res.success === true) {
+				addAddress(params).then(res => {
+					if(res.code === 1) {
 						this._addressList()
 					} else {
 						this.message(res.message)
@@ -140,10 +144,10 @@
 			},
 			// 删除
 			del(addressId, i) {
-				addressDel({
+				delAddress({
 					addressId: addressId
 				}).then(res => {
-					if(res.success === true) {
+					if(res.code === 1) {
 						this.addList.splice(i, 1)
 					} else {
 						this.message('删除失败')
@@ -156,21 +160,21 @@
 				if(item) {
 					this.popupTitle = '管理收货地址'
 					this.msg.userName = item.userName
-					this.msg.tel = item.tel
-					this.msg.streetName = item.streetName
+					this.msg.phone = item.phone
+					this.msg.address = item.address
 					this.msg.isDefault = item.isDefault
 					this.msg.addressId = item.addressId
 				} else {
 					this.popupTitle = '新增收货地址'
 					this.msg.userName = ''
-					this.msg.tel = ''
-					this.msg.streetName = ''
+					this.msg.phone = ''
+					this.msg.address = ''
 					this.msg.isDefault = false
 					this.msg.addressId = ''
 				}
 			}
 		},
-		created() {
+		mounted() {
 			this.userId = getStore('userId')
 			this._addressList()
 		},

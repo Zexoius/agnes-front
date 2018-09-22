@@ -13,6 +13,7 @@ export const getAllGoods = (params) => {
 export const getCartList = (params) => {
 	return API.fetchPost('/manager/cart/cartList',params,{'contentType':'application/json'})
 }
+//删除购物车
 export const cartDel = (params) => {
 	return API.fetchPost('/manager/cart/cartDel',params)
 }
@@ -25,3 +26,5 @@ export const cartDel = (params) => {
 export const addCart = (params) => {
 	return API.fetchPost('/manager/cart/addCart',params)
 }
+
+

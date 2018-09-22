@@ -110,7 +110,7 @@
 					this.$router.push({
 						path: '/goodsDetail',
 						query: {
-							goodsId: item.goodsId
+							productId: item.productId
 						}
 					})
 				} else {

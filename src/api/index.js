@@ -19,3 +19,20 @@ export const userInfo = (params) => {
 export const recommend = (params) => {
 	return API.fetchGet('/manager/goods/recommend',params)
 }
+
+//添加收货地址
+export const addAddress = (params) => {
+	return API.fetchPost('/manager/address/addAddress',params)
+}
+//删除地址
+export const delAddress = (params) => {
+	return API.fetchPost('/manager/address/delAddress',params)
+}
+//查询收货地址
+export const addressList = (params) => {
+	return API.fetchPost('/manager/address/addressList',params)
+}
+//更新收货地址
+export const updateAddress = (params) => {
+	return API.fetchPost('/manager/address/updateAddress',params)
+}

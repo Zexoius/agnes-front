@@ -3,7 +3,7 @@
 		<y-shelf title="账户资料">
 			<div slot="content">
 				<div class="avatar-box">
-					<div class=img-box><img :src="userInfo.info.file" alt=""></div>
+					<div class=img-box><img :src="userInfo.info.avator" alt=""></div>
 					<div class="r-box">
 						<h3 style="margin-left: 13px;">修改头像</h3>
 						<y-button text="上传头像" classStyle="main-btn" style="margin: 0;" @btnClick="editAvatar()"></y-button>
@@ -57,11 +57,11 @@
 </template>
 <script>
 	import YButton from '/components/YButton'
-	import { upload } from '/api/index'
+//	import { upload } from '/api/index'
 	import YShelf from '/components/shelf'
 	import vueCropper from 'vue-cropper'
 	import { mapState, mapMutations } from 'vuex'
-	import { getStore } from '/utils/storage'
+	import { getStore } from '/store/storage'
 	export default {
 		data() {
 			return {

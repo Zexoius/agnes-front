@@ -10,12 +10,13 @@
 					</div>
 					<div class="right-box">
 						<div class="nav-list">
-							<!--<router-link to="/product">全部商品</router-link>-->
-							<a @click="_standBy">全部商品</a>
+							<router-link to="/">全部商品</router-link>
+							<!--<a @click="_standBy">全部商品</a>-->
 						</div>
 						<div class="nav-aside" ref="aside" :class="{fixed: (st && showNav)}">
 							<div class="user pr">
-								<router-link to="/user">个人中心</router-link>
+								<!--<router-link to="/user">个人中心</router-link>-->
+								<a @click="toUser()">个人中心</a>
 								<!--用户信息显示-->
 								<div class="nav-user-wrapper pa" v-if="login">
 									<div class="nav-user-list">
@@ -54,14 +55,15 @@
 													<li class="clearfix" v-for="(item,i) in cartList" :key="i">
 														<div class="cart-item">
 															<div class="cart-item-inner">
-																<router-link :to="'productDetails?productId='+item.goodsId">
+																<!--<router-link :to="{path: 'goodsDetail',query:'{productId: item.goodsId}'}">-->
+																	<!--<a @click="toProduct(item.goodsId)"></a>-->
 																	<div class="item-thumb">
 																		<img :src="item.productImg">
 																	</div>
 																	<div class="item-desc">
 																		<div class="cart-cell">
 																			<h4>
-																				<router-link :to="'productDetails?productId='+item.goodsId" v-text="item.goodsName"></router-link>
+																				<router-link :to="'goodsDetail?productId='+item.goodsId" v-text="item.goodsName"></router-link>
 																			</h4>
 																			<h6>
 																				<span class="price-icon">¥</span>
@@ -265,6 +267,26 @@
 					path: '/cart'
 				})
 			},
+			toUser(){
+				if(this.login){
+					this.$router.push({
+						path: '/user/information'
+					})
+				}else{
+					this.$router.push({
+						path: '/login'
+					})
+				}
+			},
+			toProduct(productId){
+//				window.location.href('localhost:8082/goodsDetail/productId=' + productId);
+				this.$router.push({
+					name: 'goodsDetail',
+					params: {
+						'goodsId': productId
+					}
+				})
+			},
 			// 控制顶部
 			navFixed() {
 				if(this.$route.path === '/goods' ||
@@ -289,8 +311,15 @@
 			},
 			// 退出登陆
 			_loginOut() {
-				loginOut().then(res => {
+				let params = {
+					params: {
+						token: this.token
+					}
+				}
+				userLogout().then(res => {
 					removeStore('buyCart')
+					removeStore('userInfo')
+					removeStore('token')
 					window.location.href = '/'
 				})
 			}
