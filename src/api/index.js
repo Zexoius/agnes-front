@@ -10,6 +10,11 @@ export const userLogout = (params) => {
 	return API.fetchGet('/manager/user/logout', params)
 }
 
+// 注册
+export const register = (params) => {
+	return API.fetchPost('/manager/user/register',params)
+}
+
 //用户信息
 export const userInfo = (params) => {
 	return API.fetchGet('/manager/user/checkLogin',params)

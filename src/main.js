@@ -23,7 +23,7 @@ Vue.use(VueLazyload, {
 	loading: '/static/images/loading2.gif'
 })
 
-const whiteList = ['/home', '/goods', '/login', '/goodsDetails']
+const whiteList = ['/home', '/goods', '/login','/register','/goodsDetails']
 router.beforeEach(function(to, from, next) {
 	let params = {
 		params: {

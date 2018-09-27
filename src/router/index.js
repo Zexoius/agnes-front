@@ -4,6 +4,7 @@ import Router from 'vue-router'
 // 启用懒加载,路由被访问时才加载对应组件
 // const Login = resolve => require(['/pages/Login/login'],resolve)
 const Login = () => import('/pages/Login/Login.vue')
+const Register = () => import('/pages/Login/Register.vue')
 const Index = () => import('/pages/index.vue')
 const Home = () => import('/pages/Home/home.vue')
 const User = () => import('/pages/User/user.vue')
@@ -38,11 +39,15 @@ export default new Router({
 				},
 			]
 		},
-		
 		{
 			path: '/login',
 			name: 'login',
 			component: Login
+		},
+		{
+			path: '/register',
+			name: 'register',
+			component: Register
 		},
 		{
 			path: '/user',
